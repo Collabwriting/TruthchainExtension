@@ -1,0 +1,26 @@
+{
+    "name": "Truthchain",
+    "description": "Truthchain is a decentralized, open-source, and censorship-resistant way to store and share information.",
+    "version": "1.0.0",
+    "manifest_version": 3,
+    "action": {
+      "default_title": "Truthchain",
+      "default_icon": "assets/favicon.png"
+    },
+    "content_scripts": [
+        {
+          "matches": ["<all_urls>"],
+          "js": ["scripts/content/selection.listener.js"]
+        }
+    ],
+    "background": {
+        "service_worker": "scripts/background/service-worker.js"
+    },
+    "side_panel": {
+      "default_path": "index.html"
+    },
+    "permissions": [
+      "sidePanel",
+      "activeTab"
+    ]
+  }
