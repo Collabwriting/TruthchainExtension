@@ -5,7 +5,22 @@
     "manifest_version": 3,
     "action": {
       "default_title": "Truthchain",
-      "default_icon": "assets/favicon.png"
+      "default_icon": {
+        "16": "assets/images/16.png",
+        "24": "assets/images/24.png",
+        "32": "assets/images/32.png",
+        "48": "assets/images/48.png",
+        "64": "assets/images/64.png",
+        "128": "assets/images/128.png"
+      }
+    },
+    "icons": {
+      "16": "assets/images/16.png",
+      "24": "assets/images/24.png",
+      "32": "assets/images/32.png",
+      "48": "assets/images/48.png",
+      "64": "assets/images/64.png",
+      "128": "assets/images/128.png" 
     },
     "content_scripts": [
         {

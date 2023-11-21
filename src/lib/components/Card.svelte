@@ -1,5 +1,6 @@
 <script>
 // @ts-nocheck
+    import { SnippetStore } from '$lib/stores/SnippetStore';
 
     import { MetaMaskSDK } from '@metamask/sdk';
     import { onMount } from 'svelte';
@@ -11,7 +12,9 @@
     export let cancel = () => {};
 
     let ethereum;
-    let accountIsConnected = false;
+
+    let isPublishing = false;
+    let isSigning = false;
 
     onMount(async () => {
         const MMSDK = new MetaMaskSDK();
@@ -19,31 +22,23 @@
         await MMSDK.init();
 
         ethereum = MMSDK.getProvider();
-
-        accountIsConnected = await ethereum.isConnected();
-
-        ethereum.on('chainChanged', (chainId) => {
-            console.log('chainChanged', chainId);
-        });
-        ethereum.on('accountsChanged', (accounts) => {
-            console.log('accountsChanged', accounts);
-        });
-        ethereum.on('connect', (info) => {
-            console.log('connect', info);
-        });
-        ethereum.on('disconnect', (error) => {
-            console.log('disconnect', error);
-        });
     });
 
     const publish = async () => {
+
         const accounts = await ethereum.request({ method: 'eth_requestAccounts' });
         const account = accounts[0];
+
+        console.log("Account received: ", account);
+
+        isSigning = true;
 
         const signature = await ethereum.request({
             method: 'personal_sign',
             params: [content, account],
         });
+
+        console.log("Signature received: ", signature);
 
         const snippet = {
             title,
@@ -53,6 +48,8 @@
             signature,
         };
 
+        isPublishing = true;
+
         const response = await fetch('https://api.truthchain.dev/v1/snippets', {
             method: 'POST',
             headers: {
@@ -61,11 +58,22 @@
             body: JSON.stringify(snippet),
         });
 
+        console.log("Response received: ", response);
+
         const data = await response.json();
 
-        console.log(data);
+        console.log("Data received: ", data);
+
+        $SnippetStore = [data, ...$SnippetStore];
+
+        console.log("Snippet added to store: ", $SnippetStore);
 
         cancel();
+
+        isPublishing = false;
+        isSigning = false;
+
+        console.log("Card component finished publishing snippet.");
     };
 </script>
 
@@ -75,17 +83,28 @@
     <div class="card-content">{content}</div>
 
     <div class="card-actions">
-        <button
-            class="card-button"
-            on:click={cancel}
-            >
-            Cancel
-        </button>
-        <button
-            class="card-button card-button--publish"
-            on:click={publish}
-            >Publish & Verify
-        </button>
+
+        {#if isPublishing}
+            <div class="card-button card-button--loading">
+                Publishing...
+            </div>
+        {:else if isSigning}
+            <div class="card-button card-button--loading">
+                Signing...
+            </div>
+        {:else}
+            <button
+                class="card-button"
+                on:click={cancel}
+                >
+                Cancel
+            </button>
+            <button
+                class="card-button card-button--publish"
+                on:click={publish}
+                >Publish & Verify
+            </button>
+        {/if}
     </div>
 </div>
 
@@ -137,12 +156,24 @@
     }
 
     .card-button:hover {
+        border-color: black;
         box-shadow: 0.25rem 0.25rem black;
         margin: -0.25rem 0.25rem 0.25rem -0.25rem;
     }
 
     .card-button--publish:hover {
         background-color: #00ffce;
-        border-color: black;
+    }
+
+    .card-button--loading {
+        cursor: default;
+        background: #eee;
+        color: #999;
+    }
+
+    .card-button--loading:hover {
+        border-color: #ccc;
+        box-shadow: none;
+        margin: 0;
     }
 </style>
