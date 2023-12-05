@@ -1,6 +1,7 @@
 <script>
 // @ts-nocheck
     import { SnippetStore } from '$lib/stores/SnippetStore';
+    import { Consts } from '$lib/utils/Consts';
 
     import { MetaMaskSDK } from '@metamask/sdk';
     import { onMount } from 'svelte';
@@ -29,16 +30,12 @@
         const accounts = await ethereum.request({ method: 'eth_requestAccounts' });
         const account = accounts[0];
 
-        console.log("Account received: ", account);
-
         isSigning = true;
 
         const signature = await ethereum.request({
             method: 'personal_sign',
             params: [content, account],
         });
-
-        console.log("Signature received: ", signature);
 
         const snippet = {
             title,
@@ -50,7 +47,7 @@
 
         isPublishing = true;
 
-        const response = await fetch('https://api.truthchain.dev/v1/snippets', {
+        const response = await fetch(`${Consts.API_URL}/snippets`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -58,22 +55,14 @@
             body: JSON.stringify(snippet),
         });
 
-        console.log("Response received: ", response);
-
         const data = await response.json();
 
-        console.log("Data received: ", data);
-
         $SnippetStore = [data, ...$SnippetStore];
-
-        console.log("Snippet added to store: ", $SnippetStore);
 
         cancel();
 
         isPublishing = false;
         isSigning = false;
-
-        console.log("Card component finished publishing snippet.");
     };
 </script>
 
