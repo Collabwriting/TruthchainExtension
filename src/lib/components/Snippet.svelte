@@ -1,5 +1,6 @@
 <script>
-// @ts-nocheck
+    // @ts-nocheck
+    import { SnippetStore } from "$lib/stores/SnippetStore";
 
     import { Consts } from "$lib/utils/Consts";
     import { onMount } from "svelte";
@@ -8,7 +9,36 @@
     export let snippet = {};
 
     onMount(async () => {
+
+    });
+
+    let syncingInterval;
+
+    $: {
+        // UAL is not present and snippet was created in the last 2 hours pool snippet every 5 seconds
+        if (snippet.ual === null && (new Date().getTime() - new Date(snippet.createdAt).getTime()) < 7200000 && !syncingInterval) {
+
+            console.log("syncing");
+
+            syncingInterval = setInterval(async () => {
+
+                console.log("syncing interval triggered");
+
+                await pullSnippet();
+
+                if (snippet.ual !== null) {
+
+                    console.log("ual found, clearing interval");
+                    clearInterval(syncingInterval);
+                }
+            }, 5000);
+        }
+    }
+
+    async function pullSnippet() {
         try {
+
+            // get snippet from api
             let response = await fetch(`${Consts.API_URL}/snippets/${snippet.id}`,
                 {
                     method: "GET",
@@ -17,10 +47,19 @@
                     },
                 });
             snippet = await response.json();
+
+            // update snippet in store
+            $SnippetStore = $SnippetStore.map((s) => {
+                if (s.id === snippet.id) {
+                    return snippet;
+                }
+                return s;
+            });
+
         } catch (e) {
             console.error(e);
         }
-    });
+    }
 
     function generateLocatableUrl(snippet) {
 
@@ -73,17 +112,19 @@
             >
             WEB
         </a>
-        <a class="snippet__button snippet__button--dkg"
-            href={`https://dkg-testnet.origintrail.io/explore?ual=${snippet.ual}`}
-            target="_blank"
-            >
-            DKG
-        </a>
         <a class="snippet__button snippet__button--tc"
             href={`${Consts.VIEW_URL}/${snippet.id}`}
             target="_blank"
             >
             TC
+        </a>
+        <a class="snippet__button snippet__button--dkg"
+            class:snippet__button--disabled={snippet.ual === null}
+            title={snippet.ual === null ? "Minting NFT" : ""}
+            href={`https://dkg-testnet.origintrail.io/explore?ual=${snippet.ual}`}
+            target="_blank"
+            >
+            DKG
         </a>
     </div>
 </div>
@@ -158,5 +199,17 @@
 
     .snippet__button--web:hover {
         background-color: #fff42d;
+    }
+
+    .snippet__button--disabled {
+        cursor: default;
+        background: #eee;
+        color: #999;
+    }
+    .snippet__button--disabled:hover {
+        border-color: #ccc;
+        background-color: #eee;
+        box-shadow: none;
+        margin: 0;
     }
 </style>
