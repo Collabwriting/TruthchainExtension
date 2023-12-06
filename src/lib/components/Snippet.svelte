@@ -190,15 +190,15 @@
     }
 
     .snippet__button--tc:hover {
-        background-color: #00ffce;
+        background-color: #62eeff;
     }
 
     .snippet__button--dkg:hover {
-        background-color: #dc95ff;
+        background-color: #e4adff;
     }
 
     .snippet__button--web:hover {
-        background-color: #fff42d;
+        background-color: #00ffce;
     }
 
     .snippet__button--disabled {
