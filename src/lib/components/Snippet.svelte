@@ -8,33 +8,6 @@
 
     export let snippet = {};
 
-    onMount(async () => {
-
-    });
-
-    let syncingInterval;
-
-    $: {
-        // UAL is not present and snippet was created in the last 2 hours pool snippet every 5 seconds
-        if (snippet.ual === null && (new Date().getTime() - new Date(snippet.createdAt).getTime()) < 7200000 && !syncingInterval) {
-
-            console.log("syncing");
-
-            syncingInterval = setInterval(async () => {
-
-                console.log("syncing interval triggered");
-
-                await pullSnippet();
-
-                if (snippet.ual !== null) {
-
-                    console.log("ual found, clearing interval");
-                    clearInterval(syncingInterval);
-                }
-            }, 5000);
-        }
-    }
-
     async function pullSnippet() {
         try {
 
@@ -103,9 +76,21 @@
 
 <div class="snippet" transition:fly>
     <div class="snippet__title">{snippet.title}</div>
-    <div class="snippet__status">{snippet.status}</div>
+    <div class="snippet__status" title={snippet.error ? snippet.error.replaceAll("_", " ") : ""}>
+        {snippet.status}
+
+        {#if false && snippet.error}
+            <!-- Will be released in 1.0.3 -->
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor">
+                <path fill-rule="evenodd" d="M6.701 2.25c.577-1 2.02-1 2.598 0l5.196 9a1.5 1.5 0 0 1-1.299 2.25H2.804a1.5 1.5 0 0 1-1.3-2.25l5.197-9ZM8 4a.75.75 0 0 1 .75.75v3a.75.75 0 1 1-1.5 0v-3A.75.75 0 0 1 8 4Zm0 8a1 1 0 1 0 0-2 1 1 0 0 0 0 2Z" clip-rule="evenodd" />
+            </svg>              
+        {/if}
+    </div>
     <div class="snippet__content">{snippet.content}</div>
     <div class="snippet__buttons">
+        <div class="snippet__button-label">
+            Locate on:
+        </div>
         <a class="snippet__button snippet__button--web"
             href={generateLocatableUrl(snippet)}
             target="_blank"
@@ -121,7 +106,7 @@
         <a class="snippet__button snippet__button--dkg"
             class:snippet__button--disabled={snippet.ual === null}
             title={snippet.ual === null ? "Minting NFT" : ""}
-            href={`https://dkg-testnet.origintrail.io/explore?ual=${snippet.ual}`}
+            href={snippet.ual === null ? null : `https://dkg-testnet.origintrail.io/explore?ual=${snippet.ual}`}
             target="_blank"
             >
             DKG
@@ -160,16 +145,54 @@
         color: #fff;
         background: black;
         border-radius: 2px;
+        display: flex;
+        align-items: center;
+        gap: 0.25rem;
     }
 
+    .snippet__status svg {
+        width: 0.6rem;
+        height: 0.6rem;
+    }
+
+    .snippet__splitter {
+        display: flex;
+        width: 100%;
+        position: relative;
+        margin: 0.5rem 0rem 0.25rem 0rem;
+    }
+
+    .snippet__splitter__line {
+        border-bottom: 1px solid #ccc;
+        width: 100%;
+        position: absolute;
+        top: 0.5rem;
+    }
+
+    .snippet__splitter__heading {
+        background: #fff;
+        z-index: 10;
+        padding: 0rem 0.5rem;
+        margin: 0 auto;
+        font-size: 0.75rem;
+        color: #000;
+        font-weight: 300;
+    }
 
     .snippet__buttons {
         display: flex;
         flex-direction: row;
         justify-content: flex-end;
-        gap: 0.5rem;
+        gap: 0.25rem;
         padding: 0.5rem 0.5rem;
         font-size: 0.8rem;
+        align-items: center;
+        width: calc(100% - 2rem);
+    }
+
+    .snippet__button-label {
+        color: #aaa;
+        margin-right: auto;
     }
 
     .snippet__button {

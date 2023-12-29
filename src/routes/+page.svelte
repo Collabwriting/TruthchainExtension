@@ -2,6 +2,7 @@
     import { onMount } from 'svelte';
     import Home from './pages/Home.svelte';
     import Settings from './pages/Settings.svelte';
+    import Notifications from '$lib/components/Notifications.svelte';
 
     let activePage = 'home';
 
@@ -10,8 +11,6 @@
     let selectedUrl = '';
 
     onMount(() => {
-        console.log('The component has mounted');
-
         // @ts-ignore
         chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
             if (request.action === 'selectionChanged') {
@@ -77,6 +76,8 @@
 {:else if activePage === "settings"}
     <Settings></Settings>
 {/if}
+
+<Notifications />
 
 <style>
     .header {
