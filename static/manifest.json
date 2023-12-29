@@ -1,7 +1,7 @@
 {
-    "name": "Collabmining",
-    "description": "Collabmining is a decentralized, open-source, and censorship-resistant way to store and share information.",
-    "version": "1.0.1",
+    "name": "Collabmining Beta",
+    "description": "Collabmining is a data mining tool for decentralized, open-source, and censorship-resistant information gathering.",
+    "version": "1.0.2.2",
     "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAnJ2Ze23+vf6oyGKmjhCb3A/md43h1CGTd80H5L3W0buPCTb8rVepE+ZPL6jN8bxOGafiBiSSaEIKeqPvVJ9InZeYV6xMFd/bZfJm8iXrmo7kvMTB49tAtG8mr2C57kkRVW3ytMJ5jON9tiTIl3MgmOiwgf3xu4GLIOd8kMGFlyApSnXvIk4Pd3G1xuoQDTQ7pLQhC/Kzua/4s5H6wjDjmyiS0UfDzPu2StiU60gYNjTzELa71k/uiAILugwRkiKse8jNR7yBB8zj9WFUOlZcmoNLEexSaSI78cfaXWjqTpiqsCR+dnHdd8ZcXLMxgcS6v1uD90hQpJoyyPT2sJffewIDAQAB",
     "manifest_version": 3,
     "action": {
