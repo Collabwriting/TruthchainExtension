@@ -1,38 +1,44 @@
-# create-svelte
+# Collabmining Chrome Extension
+Collabmining is a Chrome extension that leverages Truthchain to verify information online and publish it to OriginTrail's Decentralized Knowledge Graph.
 
-Everything you need to build a Svelte project, powered by [`create-svelte`](https://github.com/sveltejs/kit/tree/master/packages/create-svelte).
+## Features
 
-## Creating a project
+- Verify information online using Truthchain's blockchain technology.
+- Publish verified information to OriginTrail's Decentralized Knowledge Graph.
+- Collaborate with other users to validate and curate information.
 
-If you're seeing this, you've probably already done this step. Congrats!
+## Diagram
+![image](https://github.com/Collabwriting/TruthchainExtension/assets/9627557/e238220a-b8e4-49f7-a1a7-6a5d4fd3f881)
 
-```bash
-# create a new project in the current directory
-npm create svelte@latest
+## Installation
 
-# create a new project in my-app
-npm create svelte@latest my-app
-```
+1. Clone the repository:
+    ```shell
+    git clone https://github.com/your-username/collabmining-extension.git
+    ```
 
-## Developing
+2. Open Chrome and go to `chrome://extensions`.
 
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
+3. Enable Developer mode by toggling the switch in the top right corner.
 
-```bash
-npm run dev
+4. Click on "Load unpacked" and select the cloned repository folder.
 
-# or start the server and open the app in a new browser tab
-npm run dev -- --open
-```
+5. The Collabmining extension should now be installed and ready to use.
 
-## Building
+## Usage
 
-To create a production version of your app:
+1. Navigate to a webpage containing information you want to publish and verify.
 
-```bash
-npm run build
-```
+2. Click on the Collabmining extension icon in the Chrome toolbar.
 
-You can preview the production build with `npm run preview`.
+3. Select the information you want to verify and click on the "Publish & Verify" button.
 
-> To deploy your app, you may need to install an [adapter](https://kit.svelte.dev/docs/adapters) for your target environment.
+4. The extension will use Truthchain to verify the information and publish it to OriginTrail's Decentralized Knowledge Graph.
+
+## Contributing
+
+Contributions are welcome! If you have any ideas, suggestions, or bug reports, please open an issue or submit a pull request.
+
+## License
+
+This project is licensed under the [GNU General Public License v3.0](https://choosealicense.com/licenses/gpl-3.0/).
