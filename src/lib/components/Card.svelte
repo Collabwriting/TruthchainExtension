@@ -174,11 +174,11 @@
         console.log("Initializing DKG");
 
         dkg = new DKG({
-            environment: "testnet",
-            endpoint: "http://172.171.246.143",
-            port: 80,
+            environment: "mainnet",
+            endpoint: "https://nebula.mainnet.truthchain.dev",
+            port: 443,
             blockchain: {
-                name: "otp:20430"
+                name: "otp:2043"
             },
         });
 
