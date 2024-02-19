@@ -21,6 +21,7 @@
 	"type": "module",
 	"dependencies": {
 		"@metamask/sdk": "^0.14.3",
-		"dkg.js": "^6.1.2"
+		"buffer": "^6.0.3",
+		"dkg.js": "^6.2.0"
 	}
 }

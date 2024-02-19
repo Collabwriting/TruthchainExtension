@@ -106,7 +106,7 @@
         <a class="snippet__button snippet__button--dkg"
             class:snippet__button--disabled={snippet.ual === null}
             title={snippet.ual === null ? "Minting NFT" : ""}
-            href={snippet.ual === null ? null : `https://dkg-testnet.origintrail.io/explore?ual=${snippet.ual}`}
+            href={snippet.ual === null ? null : `https://dkg.origintrail.io/explore?ual=${snippet.ual}`}
             target="_blank"
             >
             DKG
