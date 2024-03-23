@@ -2,6 +2,7 @@
     import { NotificationStore } from '$lib/stores/NotificationStore';
     import { SnippetStore } from '$lib/stores/SnippetStore';
     import { Consts } from '$lib/utils/Consts';
+    import { createDkgClient } from '$lib/utils/DkgUtils';
 
     import { MetaMaskSDK } from '@metamask/sdk';
 
@@ -113,6 +114,10 @@
                 'content': data.content
             };
 
+            await dkg.asset.increaseAllowance('1569429592284014000');
+            const currentAllowance = await dkg.asset.getCurrentAllowance();
+            console.log("Current Allowance", currentAllowance);
+
             // publish asset to DKG
             const result = await dkg.asset.create({
                     public: asset,
@@ -173,14 +178,7 @@
 
         console.log("Initializing DKG");
 
-        dkg = new DKG({
-            environment: "mainnet",
-            endpoint: "https://nebula.mainnet.truthchain.dev",
-            port: 443,
-            blockchain: {
-                name: "otp:2043"
-            },
-        });
+        dkg = createDkgClient();
 
         const nodeInfo = await dkg.node.info();
 
